@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login2/WelcomeScreen.dart';
-import 'package:login2/loginScreen.dart';
+import 'package:login2/login_screen.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
-
-//colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//useMaterial3: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login2/regScreen.dart';
+import 'package:get/get.dart';
+import 'package:login2/reg_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,34 +14,16 @@ class LoginScreen extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Container(
-                // duration: Duration(milliseconds: 200),
-                // curve: Curves.bounceOut,
                 alignment: Alignment.topLeft,
-                // decoration: BoxDecoration(
-                //   gradient: LinearGradient(
-                //     colors: [
-                //       Color(0xffB8736),
-                //       Color(0xffB1836),
-                //     ],
-                //   ),
-                // ),
-                // child: Text(
-                //   'Please Sign In!',
-                //   style: TextStyle(
-                //       fontSize: 30,
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.bold),
-                // ),
+
               ),
             ),
             Expanded(
               flex: 3,
               child: Container(
-                // duration: Duration(seconds: 3),
-                // curve: Curves.slowMiddle,
                 decoration: BoxDecoration(
                     color: Colors.grey.shade800,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0))),
                 height: 400,
@@ -50,19 +33,19 @@ class LoginScreen extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 25.0,
                         ),
-                        NewWidget(label: 'Gmail', icon: Icons.mail),
-                        SizedBox(
+                        const NewWidget(label: 'Gmail', icon: Icons.mail),
+                        const SizedBox(
                           height: 20.0,
                         ),
-                        NewWidget(
+                        const NewWidget(
                             label: 'password', icon: Icons.visibility_off),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
-                        Align(
+                        const Align(
                           alignment: Alignment.centerRight,
                           child: Text(
                             'Forgot Password?',
@@ -73,32 +56,9 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 28.0,
                         ),
-                        // Container(
-                        //   height: 55,
-                        //   width: 300,
-                        //   // decoration: BoxDecoration(
-                        //   //   gradient: LinearGradient(
-                        //   //     colors: [
-                        //   //       Color(0xffB8736),
-                        //   //       Color(0xffB1836),
-                        //   //     ],
-                        //   //   ),
-                        //   // ),
-                        //   child: Center(
-                        //
-                        //       child: Text(
-                        //     'Log In',
-                        //     style: TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 20,
-                        //         color: Colors.white,
-                        //
-                        //     ),
-                        //   )),
-                        // ),
                         ElevatedButton(
                           style: ButtonStyle(
                             foregroundColor:
@@ -107,14 +67,14 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () {
                             //add navigation after login screen
                           },
-                          child: Text("Login",
+                          child: const Text("Login",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                                 color: Colors.white,
                               )),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 50.0,
                         ),
                         Align(
@@ -123,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
+                              const Text(
                                 'Don\'t have an Account?',
                                 style: TextStyle(
                                     color: Colors.grey,
@@ -131,26 +91,9 @@ class LoginScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => regScreen()));
+                                  Get.to(const RegScreen());
                                 },
-                                // Padding(
-                                //   padding: EdgeInsets.symmetric(vertical: 16.0),
-                                //   child: Material(
-                                //     color: Colors.blueAccent,
-                                //     borderRadius: BorderRadius.circular(30.0),
-                                //     child: MaterialButton(
-                                //       onPressed: () {
-                                //         Navigator.push(
-                                //           context,
-                                //           MaterialPageRoute(
-                                //             builder: (context) => regScreen(),
-                                //           ),
-                                //         );
-                                //       },
-                                child: Text(
+                                child: const Text(
                                   'Sign up!',
                                   style: TextStyle(
                                     color: Colors.black,
@@ -158,10 +101,6 @@ class LoginScreen extends StatelessWidget {
                                     fontSize: 17,
                                   ),
                                 ),
-                                //     ),
-                                //   ),
-                                //)
-                                //)
                               )
                             ],
                           ),
@@ -179,38 +118,8 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-//   TextField buildTextField(String label) {
-//     return TextField(
-//       decoration: InputDecoration(
-//         enabledBorder: OutlineInputBorder(
-//             borderSide: BorderSide(
-//               color: Colors.grey,
-//             ),
-//             borderRadius: BorderRadius.all(Radius.circular(35))),
-//         focusedBorder: OutlineInputBorder(
-//             borderSide: BorderSide(
-//               color: Colors.grey,
-//             ),
-//             borderRadius: BorderRadius.all(Radius.circular(35))),
-//         suffixIcon: Icon(
-//           Icons.visibility_off,
-//           color: Colors.grey,
-//         ),
-//         label: Text(
-//           label,
-//           style: TextStyle(
-//             fontWeight: FontWeight.bold,
-//             color: Color(0xffB81736),
-//           ),
-//         ),
-//       ),
-//       obscureText: true,
-//     );
-//   }
-// }
-
 class NewWidget extends StatelessWidget {
-  NewWidget({
+  const NewWidget({super.key, 
     required this.label,
     required this.icon,
   });
@@ -221,12 +130,12 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.grey,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(35))),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.grey,
                 ),
@@ -237,12 +146,10 @@ class NewWidget extends StatelessWidget {
             ),
             label: Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xffB81736),
               ),
             )));
   }
 }
-// we have to make this page more pleasing.
-//we can pull sign up navigator on pag more downwards.
