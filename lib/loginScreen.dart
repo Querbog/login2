@@ -35,15 +35,15 @@ class LoginScreen extends StatelessWidget {
             ),
             Expanded(
               flex: 3,
-              child: AnimatedContainer(
-                duration: Duration(seconds: 3),
-                curve: Curves.slowMiddle,
+              child: Container(
+                // duration: Duration(seconds: 3),
+                // curve: Curves.slowMiddle,
                 decoration: BoxDecoration(
                     color: Colors.grey.shade800,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0))),
-                height: double.infinity,
+                height: 400,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -136,6 +136,20 @@ class LoginScreen extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) => regScreen()));
                                 },
+                                // Padding(
+                                //   padding: EdgeInsets.symmetric(vertical: 16.0),
+                                //   child: Material(
+                                //     color: Colors.blueAccent,
+                                //     borderRadius: BorderRadius.circular(30.0),
+                                //     child: MaterialButton(
+                                //       onPressed: () {
+                                //         Navigator.push(
+                                //           context,
+                                //           MaterialPageRoute(
+                                //             builder: (context) => regScreen(),
+                                //           ),
+                                //         );
+                                //       },
                                 child: Text(
                                   'Sign up!',
                                   style: TextStyle(
@@ -144,6 +158,10 @@ class LoginScreen extends StatelessWidget {
                                     fontSize: 17,
                                   ),
                                 ),
+                                //     ),
+                                //   ),
+                                //)
+                                //)
                               )
                             ],
                           ),
@@ -153,7 +171,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
