@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login2/homepage.dart';
 import 'package:login2/reg_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -15,7 +16,6 @@ class LoginScreen extends StatelessWidget {
               flex: 2,
               child: Container(
                 alignment: Alignment.topLeft,
-
               ),
             ),
             Expanded(
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(Colors.white),
                           ),
                           onPressed: () {
-                            //add navigation after login screen
+                            Get.to(HomePage());
                           },
                           child: const Text("Login",
                               style: TextStyle(
@@ -119,7 +119,8 @@ class LoginScreen extends StatelessWidget {
 }
 
 class NewWidget extends StatelessWidget {
-  const NewWidget({super.key, 
+  const NewWidget({
+    super.key,
     required this.label,
     required this.icon,
   });
