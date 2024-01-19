@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715456222329",
+    "project_id": "qapture-pit",
+    "storage_bucket": "qapture-pit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715456222329:android:ddfa07aee616e2d05af0a8",
+        "android_client_info": {
+          "package_name": "com.example.login2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUoG9VGyCjcOOVbcv--niTVvg6cUxqmFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
