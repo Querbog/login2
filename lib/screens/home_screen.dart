@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Now a days problem(Ghume)',
+            'Report a problem here !!',
             style: TextStyle(fontSize: 25.0),
           ),
           Button(

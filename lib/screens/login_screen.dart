@@ -5,7 +5,10 @@ import 'package:login2/utilities/button.dart';
 import 'package:login2/utilities/input_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailEditingController = TextEditingController();
+  final TextEditingController passwordEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +46,12 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 30.0,
                         ),
-                        const InputTextField(label: 'Gmail', icon: Icons.mail),
+                        InputTextField(label: 'Gmail', icon: Icons.mail,controller: emailEditingController,obscure: false,),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        const InputTextField(
-                            label: 'password', icon: Icons.visibility_off),
+                        InputTextField(
+                            label: 'password', icon: Icons.visibility_off,controller: passwordEditingController,obscure: false,),
                         const SizedBox(
                           height: 16,
                         ),

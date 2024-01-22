@@ -1,11 +1,39 @@
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login2/screens/home_screen.dart';
 import 'package:login2/utilities/input_text_field.dart';
 import 'package:login2/utilities/button.dart';
 import 'package:get/get.dart';
 
-class RegScreen extends StatelessWidget {
-  const RegScreen({super.key});
+class RegScreen extends StatefulWidget {
+  RegScreen({super.key});
+
+  @override
+  State<RegScreen> createState() => _RegScreenState();
+}
+
+class _RegScreenState extends State<RegScreen> {
+  final TextEditingController emailEditingController = TextEditingController();
+
+  final TextEditingController passwordEditingController =
+      TextEditingController();
+
+  final TextEditingController numberEditingController = TextEditingController();
+
+  void createUser() async {
+    String email = emailEditingController.text.trim();
+    String password = passwordEditingController.text.trim();
+
+    if (email == '' || password == '') {
+      log('Please fill all the required details...');
+    } else {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      log('user created');
+      Get.to(() => HomeScreen());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +46,7 @@ class RegScreen extends StatelessWidget {
               child: Container(
                 child: Text(
                   'Welcome to our app',
-                  style: TextStyle(
-                      fontSize: 20.0
-                  ),
+                  style: TextStyle(fontSize: 20.0),
                 ),
               ),
             ),
@@ -28,10 +54,12 @@ class RegScreen extends StatelessWidget {
               flex: 3,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0))),
+                  color: Colors.grey.shade800,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(40.0),
+                    topRight: Radius.circular(40.0),
+                  ),
+                ),
                 //height: 400,
                 width: double.infinity,
                 child: Padding(
@@ -43,20 +71,39 @@ class RegScreen extends StatelessWidget {
                         const SizedBox(
                           height: 30.0,
                         ),
-                        const InputTextField(label: 'Gmail', icon: Icons.mail),
-                        const SizedBox(height: 20.0,),
-                        const InputTextField(label: 'Mobile number', icon: Icons.phone),
+                        InputTextField(
+                          label: 'Gmail',
+                          icon: Icons.mail,
+                          controller: emailEditingController,
+                          obscure: false,
+                        ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        const InputTextField(
-                            label: 'password', icon: Icons.visibility_off),
+                        InputTextField(
+                          label: 'Mobile number',
+                          icon: Icons.phone,
+                          controller: numberEditingController,
+                          obscure: false,
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        InputTextField(
+                          label: 'password',
+                          icon: Icons.key,
+                          controller: passwordEditingController,
+                          obscure: true,
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
-                        Button(title: 'Sign-in', colour: Colors.black54, onPressed: (){
-                          Get.to( ()=> HomeScreen());
-                        }),
+                        Button(
+                            title: 'Sign-in',
+                            colour: Colors.black54,
+                            onPressed: () {
+                              createUser();
+                            }),
                       ],
                     ),
                   ),

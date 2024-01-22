@@ -5,13 +5,19 @@ class InputTextField extends StatelessWidget {
     super.key,
     required this.label,
     required this.icon,
+    required this.controller,
+    required this.obscure
   });
   final String label;
   final IconData icon;
+  final TextEditingController controller;
+  final bool obscure;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
+      obscureText: obscure,
       decoration: InputDecoration(
         enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
