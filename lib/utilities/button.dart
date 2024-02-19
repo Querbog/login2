@@ -5,7 +5,7 @@ class Button extends StatelessWidget {
 
   final String title;
   final Color colour;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(

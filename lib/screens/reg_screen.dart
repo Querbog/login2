@@ -7,31 +7,61 @@ import 'package:login2/utilities/button.dart';
 import 'package:get/get.dart';
 
 class RegScreen extends StatefulWidget {
-  RegScreen({super.key});
+  RegScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegScreen> createState() => _RegScreenState();
+  _RegScreenState createState() => _RegScreenState();
 }
 
 class _RegScreenState extends State<RegScreen> {
   final TextEditingController emailEditingController = TextEditingController();
-
-  final TextEditingController passwordEditingController =
-      TextEditingController();
-
+  final TextEditingController passwordEditingController = TextEditingController();
   final TextEditingController numberEditingController = TextEditingController();
 
-  void createUser() async {
+  bool isLoading = false;
+
+  Future<void> createUser() async {
+    setState(() {
+      isLoading = true;
+    });
+
     String email = emailEditingController.text.trim();
     String password = passwordEditingController.text.trim();
 
-    if (email == '' || password == '') {
-      log('Please fill all the required details...');
-    } else {
+    try {
+      if (email.isEmpty || password.isEmpty) {
+        throw 'Please fill all the required details...';
+      }
+
+      // Create user with email and password
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      log('user created');
+
+      // Use verifyPhoneNumber for phone number authentication
+      // Example: await FirebaseAuth.instance.verifyPhoneNumber(...)
+
+      log('User created: ${userCredential.user?.uid}');
       Get.to(() => HomeScreen());
+
+      // Provide feedback to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User created successfully!'),
+        ),
+      );
+    } catch (e) {
+      log('Error creating user: $e');
+
+      // Provide error feedback to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error creating user: $e'),
+        ),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -60,7 +90,6 @@ class _RegScreenState extends State<RegScreen> {
                     topRight: Radius.circular(40.0),
                   ),
                 ),
-                //height: 400,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -68,42 +97,33 @@ class _RegScreenState extends State<RegScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const SizedBox(
-                          height: 30.0,
-                        ),
+                        const SizedBox(height: 30.0),
                         InputTextField(
                           label: 'Gmail',
                           icon: Icons.mail,
                           controller: emailEditingController,
                           obscure: false,
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+                        const SizedBox(height: 20.0),
                         InputTextField(
                           label: 'Mobile number',
                           icon: Icons.phone,
                           controller: numberEditingController,
                           obscure: false,
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+                        const SizedBox(height: 20.0),
                         InputTextField(
-                          label: 'password',
+                          label: 'Password',
                           icon: Icons.key,
                           controller: passwordEditingController,
                           obscure: true,
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        const SizedBox(height: 16),
                         Button(
-                            title: 'Sign-in',
-                            colour: Colors.black54,
-                            onPressed: () {
-                              createUser();
-                            }),
+                          title: isLoading ? 'Signing in...' : 'Sign Up',
+                          colour: Colors.black54,
+                          onPressed: isLoading ? null : createUser,
+                        ),
                       ],
                     ),
                   ),

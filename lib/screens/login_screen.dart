@@ -1,14 +1,62 @@
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login2/screens/home_screen.dart';
 import 'package:login2/screens/reg_screen.dart';
 import 'package:login2/utilities/button.dart';
 import 'package:login2/utilities/input_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailEditingController = TextEditingController();
   final TextEditingController passwordEditingController = TextEditingController();
+
+  bool isLoading = false;
+
+  void loggedInUser() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    String email = emailEditingController.text.trim();
+    String password = passwordEditingController.text.trim();
+
+    try {
+      if (email.isEmpty || password.isEmpty) {
+        throw 'Please fill all the required details...';
+      }
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+
+        log('User Logeed-In: ${userCredential.user?.uid}');
+        Get.to(() => HomeScreen());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User Logged-in successfully!'),
+          ),
+        );
+    } catch (e) {
+      log('Error logging-in user: $e');
+
+      // Provide error feedback to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error logging-in user: $e'),
+        ),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +69,7 @@ class LoginScreen extends StatelessWidget {
               child: Container(
                 child: Text(
                   'Welcome to our app',
-                  style: TextStyle(
-                    fontSize: 20.0
-                  ),
+                  style: TextStyle(fontSize: 20.0),
                 ),
               ),
             ),
@@ -46,24 +92,43 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 30.0,
                         ),
-                        InputTextField(label: 'Gmail', icon: Icons.mail,controller: emailEditingController,obscure: false,),
+                        InputTextField(
+                          label: 'Gmail',
+                          icon: Icons.mail,
+                          controller: emailEditingController,
+                          obscure: false,
+                        ),
                         const SizedBox(
                           height: 20.0,
                         ),
                         InputTextField(
-                            label: 'password', icon: Icons.visibility_off,controller: passwordEditingController,obscure: false,),
+                          label: 'password',
+                          icon: Icons.key,
+                          controller: passwordEditingController,
+                          obscure: true,
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
-                        const Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 17,
+                        GestureDetector(
+                          onTap: (){
+
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
                           ),
                         ),
-                        Button(title: 'Login', colour: Colors.black54, onPressed: (){}),
+                        Button(
+                            title: 'Login',
+                            colour: Colors.black54,
+                            onPressed: () {
+                              loggedInUser();
+                            }),
                         const SizedBox(
                           height: 30.0,
                         ),
@@ -77,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(()=> RegScreen());
+                                Get.to(() => RegScreen());
                               },
                               child: const Text(
                                 'Sign up!',
