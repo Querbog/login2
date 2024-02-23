@@ -43,30 +43,39 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(fontSize: 25.0),
           ),
           Expanded(
+            flex: 3,
             child: ListView.builder(
               itemCount: reportedPotHoles!.length,
               itemBuilder: (context, index) {
                 ReportedPothole potHole = reportedPotHoles![index];
                 return Card(
                   child: ListTile(
-                    title: Text('Street: ${potHole.streetName}, \n City: ${potHole.cityName}, \n State: ${potHole.stateName}'),
+                    title: Text(
+                        'Street: ${potHole.streetName},\nCity: ${potHole.cityName},\nState: ${potHole.stateName}'),
                     subtitle: Text('Image URL: ${potHole.imageUrl}'),
                   ),
                 );
               },
             ),
           ),
-          Button(
-            title: 'Report problem',
-            colour: Colors.tealAccent,
-            onPressed: () async {
-              var newPotHole = await Get.to(() => ImageScreen());
-              if (newPotHole != null) {
-                setState(() {
-                  reportedPotHoles!.add(newPotHole);
-                });
-              }
-            },
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+              child: Button(
+                title: 'Report problem',
+                colour: Colors.tealAccent,
+                onPressed: () async {
+                  var newPotHole = await Get.to(() => ImageScreen());
+                  if (newPotHole != null) {
+                    setState(() {
+                      reportedPotHoles!.add(newPotHole);
+                    });
+                  }
+                },
+              ),
+            ),
           ),
         ],
       ),

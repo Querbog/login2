@@ -26,7 +26,9 @@ class _ImageScreenState extends State<ImageScreen> {
   String? stateName;
   double? latitude;
   double? longitude;
-  late String imageDownloadURL; // Store the image download URL
+  String? imageDownloadURL; // Store the image download URL
+
+  bool _isLoading = false;
 
   Future<void> getImage() async {
     fetchLocationAndPlaceDetails();
@@ -74,7 +76,7 @@ class _ImageScreenState extends State<ImageScreen> {
         longitude = location.longitude;
       });
       List<Placemark> placemarks =
-      await placemarkFromCoordinates(latitude!, longitude!);
+          await placemarkFromCoordinates(latitude!, longitude!);
       setState(() {
         streetName = placemarks[0].thoroughfare;
         cityName = placemarks[0].locality;
@@ -96,7 +98,7 @@ class _ImageScreenState extends State<ImageScreen> {
             _image != null
                 ? Image.file(_image!, fit: BoxFit.cover)
                 : Image.network(
-                'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
+                    'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
             Button(
                 title: 'Capture Pot-Hole',
                 colour: Colors.grey,
@@ -104,20 +106,42 @@ class _ImageScreenState extends State<ImageScreen> {
             Text('Street: ${streetName ?? "Loading..."}'),
             Text('City: ${cityName ?? "Loading..."}'),
             Text('State: ${stateName ?? "Loading..."}'),
-            Button(
-                title: 'Report Pot-Hole',
-                colour: Colors.grey,
-                onPressed: () async {
-                  ReportedPothole newPotHole = ReportedPothole(
-                    imageUrl: imageDownloadURL,
-                    streetName: streetName!,
-                    cityName: cityName!,
-                    stateName: stateName!,
-                  );
+            _isLoading
+                ? CircularProgressIndicator()
+                : Button(
+                    title: 'Report Pot-Hole',
+                    colour: Colors.grey,
+                    onPressed: () async {
+                      // Check if imageDownloadURL is available
+                      if (imageDownloadURL != null) {
+                        setState(() {
+                          _isLoading = true; // Set loading state
+                        });
+                        ReportedPothole newPotHole = ReportedPothole(
+                          imageUrl: imageDownloadURL!,
+                          streetName: streetName!,
+                          cityName: cityName!,
+                          stateName: stateName!,
+                        );
 
-                  // Navigate back to HomeScreen and pass the new pothole
-                  Get.back(result: newPotHole);
-                })
+                        // Simulate a delay for demonstration purposes
+                        await Future.delayed(Duration(seconds: 2));
+
+                        // Navigate back to HomeScreen and pass the new pothole
+                        Get.back(result: newPotHole);
+
+                        setState(() {
+                          _isLoading = false; // Reset loading state
+                        });
+                      } else {
+                        // Show a message or handle the case where imageDownloadURL is null
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Image is uploading....'),
+                          ),
+                        );
+                      }
+                    }),
           ],
         ),
       ),
