@@ -101,7 +101,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
             Button(
                 title: 'Capture Pot-Hole',
-                colour: Colors.grey,
+                colour: Colors.redAccent,
                 onPressed: getImage),
             Text('Street: ${streetName ?? "Loading..."}'),
             Text('City: ${cityName ?? "Loading..."}'),
@@ -110,7 +110,7 @@ class _ImageScreenState extends State<ImageScreen> {
                 ? CircularProgressIndicator()
                 : Button(
                     title: 'Report Pot-Hole',
-                    colour: Colors.grey,
+                    colour: Colors.redAccent,
                     onPressed: () async {
                       // Check if imageDownloadURL is available
                       if (imageDownloadURL != null) {

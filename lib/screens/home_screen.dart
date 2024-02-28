@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
               child: Button(
                 title: 'Report problem',
-                colour: Colors.tealAccent,
+                colour: Colors.redAccent,
                 onPressed: () async {
                   var newPotHole = await Get.to(() => ImageScreen());
                   if (newPotHole != null) {
