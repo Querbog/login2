@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:login2/screens/report_pothole.dart';
+import 'report_pothole.dart';
 import 'package:login2/utilities/button.dart';
 import 'package:login2/utilities/location.dart';
 
@@ -34,7 +34,14 @@ class _ImageScreenState extends State<ImageScreen> {
     fetchLocationAndPlaceDetails();
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
+      if (image == null){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to pick image'),
+          ),
+        );
+        return;
+      }
 
       setState(() {
         _image = File(image.path);
@@ -43,11 +50,15 @@ class _ImageScreenState extends State<ImageScreen> {
       // Upload image and get download URL
       imageDownloadURL = await uploadImageToStorage(_image!);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to pick image $e'),
+        ),
+      );
     }
   }
 
-  Future<String> uploadImageToStorage(File imageFile) async {
+  Future<String?> uploadImageToStorage(File imageFile) async {
     try {
       Reference reference = FirebaseStorage.instance
           .ref()
@@ -61,8 +72,11 @@ class _ImageScreenState extends State<ImageScreen> {
       print('Image uploaded successfully. Download URL: $downloadURL');
       return downloadURL;
     } catch (e) {
-      print('Error uploading image to Firebase Storage: $e');
-      throw e;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error uploading image to Firebase Storage'),
+        ),
+      );
     }
   }
 
@@ -78,12 +92,16 @@ class _ImageScreenState extends State<ImageScreen> {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude!, longitude!);
       setState(() {
-        streetName = placemarks[0].thoroughfare;
+        streetName = placemarks[0].street;
         cityName = placemarks[0].locality;
         stateName = placemarks[0].administrativeArea;
       });
     } catch (e) {
-      print('Error fetching location and place details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Turn on location permissions'),
+        ),
+      );
     }
   }
 
@@ -98,7 +116,8 @@ class _ImageScreenState extends State<ImageScreen> {
             _image != null
                 ? Image.file(_image!, fit: BoxFit.cover)
                 : Image.network(
-                    'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
+                    'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'
+            ),
             Button(
                 title: 'Capture Pot-Hole',
                 colour: Colors.redAccent,
@@ -113,6 +132,14 @@ class _ImageScreenState extends State<ImageScreen> {
                     colour: Colors.redAccent,
                     onPressed: () async {
                       // Check if imageDownloadURL is available
+                      if (_image == null){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please click an image...'),
+                          ),
+                        );
+                        return;
+                      }
                       if (imageDownloadURL != null) {
                         setState(() {
                           _isLoading = true; // Set loading state
@@ -133,11 +160,12 @@ class _ImageScreenState extends State<ImageScreen> {
                         setState(() {
                           _isLoading = false; // Reset loading state
                         });
-                      } else {
-                        // Show a message or handle the case where imageDownloadURL is null
+                      }else{
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Image is uploading....'),
+                            duration: Duration(seconds: 5),
+                            content: Text('Image is uploading....'
+                                'click again'),
                           ),
                         );
                       }
