@@ -6,6 +6,7 @@ import 'package:login2/utilities/input_text_field.dart';
 import 'package:login2/utilities/button.dart';
 import 'package:get/get.dart';
 
+
 class RegScreen extends StatefulWidget {
   RegScreen({Key? key}) : super(key: key);
 
@@ -19,6 +20,7 @@ class _RegScreenState extends State<RegScreen> {
   final TextEditingController numberEditingController = TextEditingController();
 
   bool isLoading = false;
+  late BuildContext snackBarcontext;
 
   Future<void> createUser() async {
     setState(() {
@@ -113,6 +115,10 @@ class _RegScreenState extends State<RegScreen> {
                         ),
                         const SizedBox(height: 20.0),
                         InputTextField(
+                          onChanged: (text) {
+                            onPasswordChange(
+                                text); // Call your desired function with the updated text
+                          },
                           label: 'Password',
                           icon: Icons.key,
                           controller: passwordEditingController,
@@ -120,9 +126,31 @@ class _RegScreenState extends State<RegScreen> {
                         ),
                         const SizedBox(height: 16),
                         Button(
+
                           title: isLoading ? 'Signing in...' : 'Sign Up',
                           colour: Colors.black54,
-                          onPressed: isLoading ? null : createUser,
+                          onPressed: isLoading ? null :() {
+                            // Check password conditions before signing in
+                            String password = passwordEditingController.text.trim();
+
+                            // Use your existing onPasswordChange function for validation
+                            onPasswordChange(password);
+
+                            if (onPasswordChange(password)) {
+                              // Password conditions are met, proceed with sign up
+                              createUser;
+                            } else {
+                              // Show a SnackBar with the password requirements
+                              snackBarcontext = context;
+                              ScaffoldMessenger.of(snackBarcontext).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Password must contain at least 8 characters and one special character.',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -134,5 +162,22 @@ class _RegScreenState extends State<RegScreen> {
         ),
       ),
     );
+  }
+
+   onPasswordChange(String password) {
+    // Implement your password validation logic here
+    if (password.length >= 8 && containsSpecialCharacter(password)) {
+      // Password is valid
+      print('Password is valid');
+    } else {
+      // Password is not valid
+      print('Password is not valid');
+    }
+  }
+
+  bool containsSpecialCharacter(String value) {
+    // Define your special characters or use a regex pattern
+    String specialCharacters = r'!@#$%^&*()_-+={}[]|\:;"<>,.?/~`';
+    return value.split('').any((char) => specialCharacters.contains(char));
   }
 }
