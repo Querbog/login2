@@ -19,6 +19,15 @@ class _RegScreenState extends State<RegScreen> {
   final TextEditingController passwordEditingController = TextEditingController();
   final TextEditingController numberEditingController = TextEditingController();
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailEditingController.dispose();
+    passwordEditingController.dispose();
+    numberEditingController.dispose();
+    super.dispose();
+  }
+
   bool isLoading = false;
   late BuildContext snackBarcontext;
 

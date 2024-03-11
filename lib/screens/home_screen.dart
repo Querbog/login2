@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 1,
             child: Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
               child: Button(
                 title: 'Report problem',
                 colour: Colors.redAccent,

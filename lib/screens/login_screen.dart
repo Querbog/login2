@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login2/screens/forgot_password_screen.dart';
 import 'package:login2/screens/home_screen.dart';
 import 'package:login2/screens/reg_screen.dart';
 import 'package:login2/utilities/button.dart';
@@ -17,6 +18,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailEditingController = TextEditingController();
   final TextEditingController passwordEditingController = TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailEditingController.dispose();
+    passwordEditingController.dispose();
+    super.dispose();
+  }
 
   bool isLoading = false;
 
@@ -57,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
-
+                            Get.to(()=> ForgotPasswordScreen());
                           },
                           child: Text(
                             'Forgot Password?',
