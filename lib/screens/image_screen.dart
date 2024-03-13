@@ -27,6 +27,7 @@ class _ImageScreenState extends State<ImageScreen> {
   double? latitude;
   double? longitude;
   String? imageDownloadURL; // Store the image download URL
+  String? dateTime = DateTime.now().toString();
 
   bool _isLoading = false;
 
@@ -34,7 +35,14 @@ class _ImageScreenState extends State<ImageScreen> {
     fetchLocationAndPlaceDetails();
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
+      if (image == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to pick image'),
+          ),
+        );
+        return;
+      }
 
       setState(() {
         _image = File(image.path);
@@ -43,11 +51,15 @@ class _ImageScreenState extends State<ImageScreen> {
       // Upload image and get download URL
       imageDownloadURL = await uploadImageToStorage(_image!);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to pick image $e'),
+        ),
+      );
     }
   }
 
-  Future<String> uploadImageToStorage(File imageFile) async {
+  Future<String?> uploadImageToStorage(File imageFile) async {
     try {
       Reference reference = FirebaseStorage.instance
           .ref()
@@ -61,8 +73,12 @@ class _ImageScreenState extends State<ImageScreen> {
       print('Image uploaded successfully. Download URL: $downloadURL');
       return downloadURL;
     } catch (e) {
-      print('Error uploading image to Firebase Storage: $e');
-      rethrow;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error uploading image to Firebase Storage'),
+        ),
+      );
+      return "";
     }
   }
 
@@ -83,8 +99,18 @@ class _ImageScreenState extends State<ImageScreen> {
         stateName = placemarks[0].administrativeArea;
       });
     } catch (e) {
-      print('Error fetching location and place details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Turn on location permissions'),
+        ),
+      );
     }
+  }
+
+  @override
+  void initState() {
+    fetchLocationAndPlaceDetails();
+    super.initState();
   }
 
   @override
@@ -96,16 +122,19 @@ class _ImageScreenState extends State<ImageScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _image != null
-                ? Image.file(_image!, fit: BoxFit.cover)
+                ? Image.file(_image!, fit: BoxFit.cover,width: 350.0,height: 400.0,)
                 : Image.network(
                     'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
             Button(
                 title: 'Capture Pot-Hole',
                 colour: Colors.lightBlueAccent,
                 onPressed: getImage),
-            Text('Street: ${streetName ?? "Loading..."}'),
-            Text('City: ${cityName ?? "Loading..."}'),
-            Text('State: ${stateName ?? "Loading..."}'),
+            Text('Latitude: ${latitude ?? "Loading..."}'),
+            Text('Longitude: ${longitude ?? "Loading..."}'),
+            Text('Date : $dateTime'),
+            // Text('Street: ${streetName ?? "Loading..."}'),
+            // Text('City: ${cityName ?? "Loading..."}'),
+            // Text('State: ${stateName ?? "Loading..."}'),
             _isLoading
                 ? const CircularProgressIndicator()
                 : Button(
@@ -113,15 +142,26 @@ class _ImageScreenState extends State<ImageScreen> {
                     colour: Colors.lightBlueAccent,
                     onPressed: () async {
                       // Check if imageDownloadURL is available
+                      if (_image == null){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please click an image...'),
+                          ),
+                        );
+                        return;
+                      }
                       if (imageDownloadURL != null) {
                         setState(() {
                           _isLoading = true; // Set loading state
                         });
                         ReportedPothole newPotHole = ReportedPothole(
                           imageUrl: imageDownloadURL!,
-                          streetName: streetName!,
-                          cityName: cityName!,
-                          stateName: stateName!,
+                          lat : latitude!,
+                          long : longitude!,
+                            dateTime :dateTime!
+                          // streetName: streetName!,
+                          // cityName: cityName!,
+                          // stateName: stateName!,
                         );
 
                         // Simulate a delay for demonstration purposes
@@ -138,6 +178,7 @@ class _ImageScreenState extends State<ImageScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Image is uploading....'),
+                            duration: Duration(seconds: 5),
                           ),
                         );
                       }

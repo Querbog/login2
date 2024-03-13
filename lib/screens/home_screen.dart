@@ -68,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Card(
                       child: ListTile(
                         title: Text(
-                          'Street: ${data['streetName']},\nCity: ${data['cityName']},\nState: ${data['stateName']}',
+                          'Latitude : ${data['lat']},\nLongitude : ${data['long']},\nDate: ${data['dateTime']}'
+                          // 'Street: ${data['streetName']},\nCity: ${data['cityName']},\nState: ${data['stateName']}',
                         ),
                         subtitle: Image.network(
                           data['imageUrl'],
@@ -103,9 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Add new pothole to Firestore
                     await FirebaseFirestore.instance.collection('potholes').add({
                       'imageUrl': newPotHole.imageUrl,
-                      'streetName': newPotHole.streetName,
-                      'cityName': newPotHole.cityName,
-                      'stateName': newPotHole.stateName,
+                      'lat' : newPotHole.lat,
+                      'long' : newPotHole.long,
+                      'dateTime' : newPotHole.dateTime
+                      // 'streetName': newPotHole.streetName,
+                      // 'cityName': newPotHole.cityName,
+                      // 'stateName': newPotHole.stateName,
                     });
                   }
                 },
