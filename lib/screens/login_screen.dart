@@ -9,7 +9,7 @@ import 'package:login2/utilities/button.dart';
 import 'package:login2/utilities/input_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordEditingController = TextEditingController();
   @override
   void dispose() {
-    // TODO: implement dispose
     emailEditingController.dispose();
     passwordEditingController.dispose();
     super.dispose();
@@ -44,9 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithEmailAndPassword(email: email, password: password);
 
         log('User Logeed-In: ${userCredential.user?.uid}');
-        Get.to(() => HomeScreen());
+        Get.to(() => const HomeScreen());
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('User Logged-in successfully!'),
           ),
         );
@@ -76,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               flex: 2,
               child: Container(
-                child: Text(
+                child: const Text(
                   'Welcome to our app',
                   style: TextStyle(fontSize: 20.0),
                 ),
@@ -121,9 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
-                            Get.to(()=> ForgotPasswordScreen());
+                            Get.to(()=> const ForgotPasswordScreen());
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -151,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(() => RegScreen());
+                                Get.to(() => const RegScreen());
                               },
                               child: const Text(
                                 'Sign up!',

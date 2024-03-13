@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 
 class RegScreen extends StatefulWidget {
-  RegScreen({Key? key}) : super(key: key);
+  const RegScreen({Key? key}) : super(key: key);
 
   @override
   _RegScreenState createState() => _RegScreenState();
@@ -21,7 +21,6 @@ class _RegScreenState extends State<RegScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailEditingController.dispose();
     passwordEditingController.dispose();
     numberEditingController.dispose();
@@ -52,11 +51,11 @@ class _RegScreenState extends State<RegScreen> {
       // Example: await FirebaseAuth.instance.verifyPhoneNumber(...)
 
       log('User created: ${userCredential.user?.uid}');
-      Get.to(() => HomeScreen());
+      Get.to(() => const HomeScreen());
 
       // Provide feedback to the user
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User created successfully!'),
         ),
       );
@@ -75,7 +74,6 @@ class _RegScreenState extends State<RegScreen> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -85,7 +83,7 @@ class _RegScreenState extends State<RegScreen> {
             Expanded(
               flex: 2,
               child: Container(
-                child: Text(
+                child: const Text(
                   'Welcome to our app',
                   style: TextStyle(fontSize: 20.0),
                 ),
@@ -124,10 +122,6 @@ class _RegScreenState extends State<RegScreen> {
                         ),
                         const SizedBox(height: 20.0),
                         InputTextField(
-                          onChanged: (text) {
-                            onPasswordChange(
-                                text); // Call your desired function with the updated text
-                          },
                           label: 'Password',
                           icon: Icons.key,
                           controller: passwordEditingController,
@@ -135,32 +129,10 @@ class _RegScreenState extends State<RegScreen> {
                         ),
                         const SizedBox(height: 16),
                         Button(
-
                           title: isLoading ? 'Signing in...' : 'Sign Up',
                           colour: Colors.black54,
-                          onPressed: isLoading ? null :() {
-                            // Check password conditions before signing in
-                            String password = passwordEditingController.text.trim();
-
-                            // Use your existing onPasswordChange function for validation
-                            onPasswordChange(password);
-
-                            if (onPasswordChange(password)) {
-                              // Password conditions are met, proceed with sign up
-                              createUser;
-                            } else {
-                              // Show a SnackBar with the password requirements
-                              snackBarcontext = context;
-                              ScaffoldMessenger.of(snackBarcontext).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Password must contain at least 8 characters and one special character.',
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                          onPressed: createUser
+                        )
                       ],
                     ),
                   ),
@@ -172,21 +144,21 @@ class _RegScreenState extends State<RegScreen> {
       ),
     );
   }
-
-   onPasswordChange(String password) {
-    // Implement your password validation logic here
-    if (password.length >= 8 && containsSpecialCharacter(password)) {
-      // Password is valid
-      print('Password is valid');
-    } else {
-      // Password is not valid
-      print('Password is not valid');
-    }
-  }
-
-  bool containsSpecialCharacter(String value) {
-    // Define your special characters or use a regex pattern
-    String specialCharacters = r'!@#$%^&*()_-+={}[]|\:;"<>,.?/~`';
-    return value.split('').any((char) => specialCharacters.contains(char));
-  }
+  //
+  //  onPasswordChange(String password) {
+  //   // Implement your password validation logic here
+  //   if (password.length >= 8 && containsSpecialCharacter(password)) {
+  //     // Password is valid
+  //     print('Password is valid');
+  //   } else {
+  //     // Password is not valid
+  //     print('Password is not valid');
+  //   }
+  // }
+  //
+  // bool containsSpecialCharacter(String value) {
+  //   // Define your special characters or use a regex pattern
+  //   String specialCharacters = r'!@#$%^&*()_-+={}[]|\:;"<>,.?/~`';
+  //   return value.split('').any((char) => specialCharacters.contains(char));
+  // }
 }

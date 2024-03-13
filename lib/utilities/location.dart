@@ -16,8 +16,8 @@ class LocationNew {
             desiredAccuracy: LocationAccuracy.low);
         latitude = position.latitude;
         longitude = position.longitude;
-        print("latitude: ${latitude}");
-        print("longitude: ${longitude}");
+        print("latitude: $latitude");
+        print("longitude: $longitude");
       }
     } catch (e) {
       print(e);

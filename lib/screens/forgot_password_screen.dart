@@ -27,7 +27,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
     emailEditingController.dispose();
     super.dispose();
   }
@@ -42,19 +41,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Enter your Email and we will send you a password reset link',
+            const Text('Enter your Email and we will send you a password reset link',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20
             ),),
-            SizedBox(height: 15.0,),
+            const SizedBox(height: 15.0,),
             InputTextField(
               label: 'Gmail',
               icon: Icons.mail,
               controller: emailEditingController,
               obscure: false,
             ),
-            SizedBox(height: 15.0,),
+            const SizedBox(height: 15.0,),
             Button(
                 title: 'Reset Password',
                 colour: Colors.lightBlueAccent,

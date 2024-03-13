@@ -7,7 +7,7 @@ import 'package:login2/screens/login_screen.dart';
 import 'package:login2/utilities/button.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void logout() async {
     await FirebaseAuth.instance.signOut();
     Get.back();
-    Get.to(() => LoginScreen());
+    Get.to(() => const LoginScreen());
   }
 
   @override
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (loadingProgress == null) {
                               return child;
                             } else {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
@@ -96,9 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
               child: Button(
                 title: 'Report problem',
-                colour: Colors.redAccent,
+                colour: Colors.lightBlueAccent,
                 onPressed: () async {
-                  var newPotHole = await Get.to(() => ImageScreen());
+                  var newPotHole = await Get.to(() => const ImageScreen());
                   if (newPotHole != null) {
                     // Add new pothole to Firestore
                     await FirebaseFirestore.instance.collection('potholes').add({

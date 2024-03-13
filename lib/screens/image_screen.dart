@@ -53,7 +53,7 @@ class _ImageScreenState extends State<ImageScreen> {
           .ref()
           .child('Pothole images')
           .child(FirebaseAuth.instance.currentUser!.uid)
-          .child(DateTime.now().millisecondsSinceEpoch.toString() + '.jpg');
+          .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
 
       UploadTask uploadTask = reference.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask;
@@ -62,7 +62,7 @@ class _ImageScreenState extends State<ImageScreen> {
       return downloadURL;
     } catch (e) {
       print('Error uploading image to Firebase Storage: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -78,7 +78,7 @@ class _ImageScreenState extends State<ImageScreen> {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude!, longitude!);
       setState(() {
-        streetName = placemarks[0].thoroughfare;
+        streetName = placemarks[0].street;
         cityName = placemarks[0].locality;
         stateName = placemarks[0].administrativeArea;
       });
@@ -101,16 +101,16 @@ class _ImageScreenState extends State<ImageScreen> {
                     'https://thumbs.dreamstime.com/b/businessman-jumping-over-pothole-business-concept-illustration-91263396.jpg'),
             Button(
                 title: 'Capture Pot-Hole',
-                colour: Colors.redAccent,
+                colour: Colors.lightBlueAccent,
                 onPressed: getImage),
             Text('Street: ${streetName ?? "Loading..."}'),
             Text('City: ${cityName ?? "Loading..."}'),
             Text('State: ${stateName ?? "Loading..."}'),
             _isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Button(
                     title: 'Report Pot-Hole',
-                    colour: Colors.redAccent,
+                    colour: Colors.lightBlueAccent,
                     onPressed: () async {
                       // Check if imageDownloadURL is available
                       if (imageDownloadURL != null) {
@@ -125,7 +125,7 @@ class _ImageScreenState extends State<ImageScreen> {
                         );
 
                         // Simulate a delay for demonstration purposes
-                        await Future.delayed(Duration(seconds: 2));
+                        await Future.delayed(const Duration(seconds: 2));
 
                         // Navigate back to HomeScreen and pass the new pothole
                         Get.back(result: newPotHole);
@@ -136,7 +136,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       } else {
                         // Show a message or handle the case where imageDownloadURL is null
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('Image is uploading....'),
                           ),
                         );

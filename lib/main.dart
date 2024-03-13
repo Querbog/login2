@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
-      home: (FirebaseAuth.instance.currentUser != null)? HomeScreen() : LoginScreen(),
+      home: (FirebaseAuth.instance.currentUser != null)? const HomeScreen() : const LoginScreen(),
     );
   }
 }
